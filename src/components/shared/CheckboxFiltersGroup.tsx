@@ -1,41 +1,66 @@
 "use client";
 import React from "react";
 import { FilterCheckbox, FilterCheckboxProps } from "./FilterCheckbox";
-import { Input } from "../ui";
+import { Input, Skeleton } from "../ui";
 
 type Item = FilterCheckboxProps;
 
 interface Props {
 	title: string;
 	items: Item[];
-	defaultItems: Item[];
+	defaultItems?: Item[];
 	limit?: number;
+	loading?: boolean;
 	searchInputPlaceholder?: string;
 	className?: string;
-	onChange?: (values: string[]) => void;
+	onClickCheckbox?: (id: string) => void;
 	defaultValue?: string[];
+	selectedValues?: Set<string>;
+	name?: string;
 }
 
 const CheckboxFiltersGroup: React.FC<Props> = ({
 	title,
 	items,
 	defaultItems,
-	limit = 5,
+	limit = 6,
+	loading,
 	searchInputPlaceholder = "Поиск...",
 	className,
-	onChange,
+	onClickCheckbox,
 	defaultValue,
+	selectedValues,
+	name,
 }) => {
 	const [showAll, setShowAll] = React.useState(false);
 	const [searchValue, setSearchValue] = React.useState("");
 
 	const list = showAll
 		? items.filter((item) => item.text.toLowerCase().includes(searchValue.toLowerCase()))
-		: defaultItems?.slice(0, limit);
+		: (defaultItems || items).slice(0, limit);
 
 	const onChangeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(e.target.value);
 	};
+
+	if (loading) {
+		return (
+			<div className={className}>
+				<p className="font-bold mb-3">{title}</p>
+
+				{Array.from({ length: limit }).map((_, index) => {
+					return (
+						<Skeleton
+							key={index}
+							className="h-6 mb-4 rounded-[8px]"
+						/>
+					);
+				})}
+
+				<Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
+			</div>
+		);
+	}
 
 	return (
 		<div className={className}>
@@ -58,8 +83,9 @@ const CheckboxFiltersGroup: React.FC<Props> = ({
 						text={item.text}
 						value={item.value}
 						endAdornment={item.endAdornment}
-						checked={false}
-						onCheckedChange={() => console.log(item.value)}
+						checked={selectedValues?.has(item.value)}
+						onCheckedChange={() => onClickCheckbox?.(item.value)}
+						name={name}
 					/>
 				))}
 			</div>

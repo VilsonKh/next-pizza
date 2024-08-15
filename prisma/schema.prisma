@@ -15,8 +15,15 @@ model User {
   email String @unique
   password String
 
-  carts Cart[] 
+  cart Cart?
+  verificationCode VerificationCode?
+  orders Order[]
 
+  role UserRole @default(USER)
+  verified DateTime
+
+  provider String?
+  providerId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,7 +85,7 @@ model Cart {
   id Int @id @default(autoincrement())
 
   user User? @relation(fields: [userId], references: [id])
-  userId Int?
+  userId Int? @unique
 
   items CartItem[]
 
@@ -105,4 +112,51 @@ model CartItem {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  user User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  token String
+  totalAmount Int
+  status OrderStatus
+  paymentId String?
+
+  items Json
+
+  fullName String
+  address String
+  email String
+  phone String
+  comment String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model VerificationCode {
+  id Int @id @default(autoincrement())
+
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+
+  code String @unique
+  createdAt DateTime @default(now())
+
+  @@unique([userId, code])
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
