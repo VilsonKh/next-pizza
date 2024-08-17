@@ -10,3 +10,5 @@ export {RangeSlider} from './RangeSlider';
 export {ProductCard} from './ProductCard';
 export {ProductsGroupList} from './ProductsGroupList';
 export {SearchInput} from './SearchInput';
+export {ProductImage} from './ProductImage';
+export {OptionsGroup} from './OptionsGroup';
