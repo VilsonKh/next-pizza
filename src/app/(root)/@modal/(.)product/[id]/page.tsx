@@ -1,10 +1,24 @@
 import { notFound } from "next/navigation";
 
-import { Container, OptionsGroup, ProductImage, Title } from "@/components/shared";
+import { ChooseProductModal, Container, OptionsGroup, Title } from "@/shared/components/shared";
 import { prisma } from "@/prisma/prisma-client";
 
 export default async function ProductModalPage({ params: { id } }: { params: { id: string } }) {
-	return <h1>123456789</h1>
+	const product = await prisma.product.findFirst({
+		where: {
+			id: Number(id),
+		},
+		include: {
+			ingredients: true,
+			items: true,
+		},
+	});
+
+	if(!product) {
+		return notFound();
+	}
+
+	return <ChooseProductModal product={product}/>
 
 	// const product = await prisma.product.findFirst({ where: { id: Number(id) } });
 
@@ -43,8 +57,8 @@ export default async function ProductModalPage({ params: { id } }: { params: { i
 	// 						{ name: "Средняя", value: "2" },
 	// 						{ name: "Большая", value: "3", disabled: true },
 	// 					]}
-  //           selectedValue="1"
-    
+	//           selectedValue="1"
+
 	// 				/>
 	// 			</div>
 	// 		</div>

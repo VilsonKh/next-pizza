@@ -2,6 +2,7 @@ import type { Ingredient } from "@prisma/client";
 import React from "react";
 import { Api } from "../services/api-client";
 
+
 type IngredientItem = Pick<Ingredient, "id" | "name">;
 
 export const useFetchIngredients = () => {

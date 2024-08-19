@@ -10,5 +10,8 @@ export {RangeSlider} from './RangeSlider';
 export {ProductCard} from './ProductCard';
 export {ProductsGroupList} from './ProductsGroupList';
 export {SearchInput} from './SearchInput';
-export {ProductImage} from './ProductImage';
+export {PizzaImage} from './PizzaImage';
 export {OptionsGroup} from './OptionsGroup';
+export {ChooseProductModal} from './modals/ChooseProductModal';
+
+export * from "./modals";

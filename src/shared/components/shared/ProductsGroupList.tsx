@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
 import { Title } from "./Title";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { ProductCard } from "./ProductCard";
 import { useIntersection } from "react-use";
 import { useCategoryStore } from "../../store/category";

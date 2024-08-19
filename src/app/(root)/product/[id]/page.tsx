@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { Container, OptionsGroup, ProductImage, Title } from "@/components/shared";
+import { Container, OptionsGroup, Title } from "@/shared/components/shared";
 import { prisma } from "@/prisma/prisma-client";
 
 export default async function ProductPage({ params: { id } }: { params: { id: string } }) {

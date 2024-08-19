@@ -1,13 +1,13 @@
 "use client";
 
+import { useFetchIngredients } from "@/shared/hooks/useFetchIngredients";
 import { Input } from "../ui";
 import CheckboxFiltersGroup from "./CheckboxFiltersGroup";
 import { RangeSlider } from "./RangeSlider";
 import { Title } from "./Title";
 import React from "react";
-import { useFetchIngredients } from "@/hooks/useFetchIngredients";
-import { useFilters } from "@/hooks/useFilters";
-import { usePushParams } from "@/hooks/usePushParams";
+import { useFilters } from "@/shared/hooks/useFilters";
+import { usePushParams } from "@/shared/hooks/usePushParams";
 
 interface Props {
 	className?: string;

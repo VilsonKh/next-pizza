@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import React from "react";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 	alt: string;
 }
 
-export const ProductImage: React.FC<Props> = ({ className, size, src, alt }) => {
+export const PizzaImage: React.FC<Props> = ({ className, size, src, alt }) => {
 	return (
 		<div className={cn("flex items-center justify-center flex-1 relative w-full", className)}>
 			<img
