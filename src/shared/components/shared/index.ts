@@ -13,5 +13,8 @@ export {SearchInput} from './SearchInput';
 export {PizzaImage} from './PizzaImage';
 export {OptionsGroup} from './OptionsGroup';
 export {ChooseProductModal} from './modals/ChooseProductModal';
+export {Ingredient} from './Ingredient';
+export {CartButton} from './CartButton';
+export {CartDrawer} from './CartDrawer';
 
 export * from "./modals";
