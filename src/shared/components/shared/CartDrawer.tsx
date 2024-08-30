@@ -1,4 +1,4 @@
-"user client";
+"use client";
 
 import React from "react";
 
@@ -16,6 +16,8 @@ import { Button } from "../ui";
 import { ArrowRight } from "lucide-react";
 import CartDrawerItem from "./CartDrawerItem";
 import { getCartItemsDetails } from "@/shared/lib/getCartItemsDetails";
+import { useCartStore } from "@/shared/store/cart";
+import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
 
 interface Props {
 	className?: string;
@@ -23,7 +25,17 @@ interface Props {
 }
 
 export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
-	if (!children) return null;
+	const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
+		state.totalAmount,
+		state.fetchCartItems,
+		state.items,
+	]);
+
+	React.useEffect(() => {
+		fetchCartItems();
+	}, []);
+
+console.log(items)
 	return (
 		<Sheet>
 			<SheetTrigger asChild>{children}</SheetTrigger>
@@ -36,16 +48,25 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children 
 
 				<div className="-mx-6 mt-5 overflow-auto flex-1">
 					<div className="mb-2">
-						<CartDrawerItem
-							id={1}
-							imageUrl="https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp"
-							details={getCartItemsDetails(2, 30, [
-								{ name: "Сыр моцарелла", price: 500 },
-							])}
-							name="Пицца Маргарита"
-							price={500}
-							quantity={1}
-						/>
+						{items.map((item) => (
+							<CartDrawerItem
+								key={item.id}
+								id={item.id}
+								imageUrl={item.imageUrl}
+								details={
+									item.pizzaSize && item.type
+										? getCartItemsDetails(
+												item.ingredients,
+												item.type as PizzaType,
+												item.pizzaSize as PizzaSize
+										  )
+										: ""
+								}
+								name={item.name}
+								price={item.price}
+								quantity={item.quantity}
+							/>
+						))}
 					</div>
 				</div>
 
@@ -56,7 +77,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children 
 								Итого
 								<div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2"></div>
 							</span>
-							<span className="font-bold text-lg">500 ₽</span>
+							<span className="font-bold text-lg">{totalAmount} ₽</span>
 						</div>
 
 						<Link href="/cart">

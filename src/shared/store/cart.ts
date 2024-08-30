@@ -1,21 +1,12 @@
 import { create } from "zustand";
-
-export type ICartItem = {
-	id: number;
-	quantity: number;
-	name: string;
-	imageUrl: string;
-	price: number;
-	pizzaSize?: number | null;
-	type?: number | null;
-	ingredients: Array<{ name: string; price: number }>;
-};
+import { Api } from "../services/api-client";
+import { CartStateItem, getCartDetails } from "../lib/getCartDetails";
 
 export interface CartState {
 	loading: boolean;
 	error: boolean;
 	totalAmount: number;
-	items: ICartItem[];
+	items: CartStateItem[];
 	// Получение товаров из корзины
 	fetchCartItems: () => Promise<void>;
 	// Запрос на обновление количества товара

@@ -13,6 +13,7 @@ const CartDrawerItem: React.FC<CartItemProps> = ({
 	price,
 	quantity,
 }) => {
+
 	return (
 		<div className="flex bg-white p-5 gap-6">
 			<CartItemDetailsImage src={imageUrl} />
