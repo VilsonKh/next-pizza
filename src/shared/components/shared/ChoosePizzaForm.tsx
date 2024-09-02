@@ -4,7 +4,12 @@ import { Title } from "./Title";
 import { Button } from "../ui";
 import { PizzaImage } from "./PizzaImage";
 import { OptionsGroup } from "./OptionsGroup";
-import { mapPizzaType, PizzaSize, pizzaSizes, PizzaType, pizzaTypes } from "@/shared/constants/pizza";
+import {
+	mapPizzaType,
+	PizzaSize,
+	PizzaType,
+	pizzaTypes,
+} from "@/shared/constants/pizza";
 import { Ingredient as IngredientItem } from "./Ingredient";
 import { Ingredient, ProductItem } from "@prisma/client";
 import { useSet } from "react-use";
@@ -17,7 +22,8 @@ interface Props {
 	className?: string;
 	ingredients: Ingredient[];
 	items: ProductItem[];
-	onClickAddCart?: () => void;
+	loading?: boolean;
+	onSubmit: (itemId: number, ingredients: number[]) => void;
 }
 
 export const ChoosePizzaForm: React.FC<Props> = ({
@@ -26,20 +32,25 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 	className,
 	ingredients,
 	items,
-	onClickAddCart,
+	loading,
+	onSubmit,
 }) => {
 	const [selectedIngredients, { toggle: addIngredient }] = useSet(new Set<number>([]));
 
-	const {size, setSize, type, setType, availablePizzas} = usePizzaSelection(items)
+	const { size, setSize, type, setType, availablePizzas, currentItemId } =
+		usePizzaSelection(items);
 
 	const totalPrice = calcTotalPizzaPrice(items, type, size, ingredients, selectedIngredients);
-	
+
 	const textDetails = `${size} см, ${mapPizzaType[type].toLowerCase()} тесто`;
 
+	console.log("ChoosePizzaForm",Array.from(selectedIngredients))
+
 	const handleClickAdd = () => {
-		onClickAddCart?.();
-		console.log({size, type, selectedIngredients})
-	}
+		if (currentItemId) {
+			onSubmit(currentItemId, Array.from(selectedIngredients));
+		}
+	};
 
 	return (
 		<div className={cn(className, "flex flex-1")}>
@@ -87,7 +98,11 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 					</div>
 				</div>
 
-				<Button onClick={handleClickAdd} className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
+				<Button
+					loading={loading}
+					onClick={handleClickAdd}
+					className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
+				>
 					Добавить в корзину за {totalPrice} ₽
 				</Button>
 			</div>

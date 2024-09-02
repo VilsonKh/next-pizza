@@ -15,6 +15,8 @@ export const usePizzaSelection = (items: ProductItem[]) => {
 		disabled: !filteredPizzasByType.some((pizza) => Number(pizza.size) === Number(item.value)),
 	}))
 
+	const  currentItemId = items.find((item) => item.pizzaType === type && item.size === size)?.id
+
 
 	React.useEffect(() => {
 		const availableSizes = filteredPizzasByType.map((pizza) => Number(pizza.size))
@@ -24,5 +26,5 @@ export const usePizzaSelection = (items: ProductItem[]) => {
 		
 	}, [type, size, filteredPizzasByType])
 
-  return {size, setSize, type, setType, availablePizzas}
+  return {size, setSize, type, setType, availablePizzas, currentItemId}
 }

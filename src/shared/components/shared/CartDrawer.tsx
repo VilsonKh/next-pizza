@@ -4,7 +4,6 @@ import React from "react";
 
 import {
 	Sheet,
-	SheetClose,
 	SheetContent,
 	SheetFooter,
 	SheetHeader,
@@ -25,32 +24,44 @@ interface Props {
 }
 
 export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
-	const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
-		state.totalAmount,
-		state.fetchCartItems,
-		state.items,
-	]);
+	const [totalAmount, fetchCartItems, items, updateItemQuantity, removeCartItem] = useCartStore(
+		(state) => [
+			state.totalAmount,
+			state.fetchCartItems,
+			state.items,
+			state.updateItemQuantity,
+			state.removeCartItem,
+		]
+	);
+
+	console.log("CartDrawer", items);
 
 	React.useEffect(() => {
 		fetchCartItems();
-	}, []);
+	}, [fetchCartItems]);
 
-console.log(items)
+	const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
+		const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+		updateItemQuantity(id, newQuantity);
+	};
+
 	return (
 		<Sheet>
 			<SheetTrigger asChild>{children}</SheetTrigger>
 			<SheetContent className="flex flex-col justify-between pb-0 bg-[#f4f1ee]">
 				<SheetHeader>
 					<SheetTitle>
-						В корзине <span className="font-bold">3 товара</span>
+						В корзине <span className="font-bold">{items.length} товара</span>
 					</SheetTitle>
 				</SheetHeader>
 
 				<div className="-mx-6 mt-5 overflow-auto flex-1">
-					<div className="mb-2">
-						{items.map((item) => (
+					{items.map((item) => (
+						<div
+							className="mb-2"
+							key={item.id}
+						>
 							<CartDrawerItem
-								key={item.id}
 								id={item.id}
 								imageUrl={item.imageUrl}
 								details={
@@ -65,9 +76,13 @@ console.log(items)
 								name={item.name}
 								price={item.price}
 								quantity={item.quantity}
+								onClickCountButton={(type) =>
+									onClickCountButton(item.id, item.quantity, type)
+								}
+								onClickRemove={() => removeCartItem(item.id)}
 							/>
-						))}
-					</div>
+						</div>
+					))}
 				</div>
 
 				<SheetFooter className="-mx-6 bg-white p-8">

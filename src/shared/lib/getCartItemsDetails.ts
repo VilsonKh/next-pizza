@@ -12,6 +12,8 @@ export const getCartItemsDetails = (
 		details.push(`${typeName} ${pizzaSize} см`);
 	}
 
+	console.log("getCartItemsDetails",ingredients)
+
 	if (ingredients) {
 		details.push(...ingredients.map((ingredient) => ingredient.name));
 	}

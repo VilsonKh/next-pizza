@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Api } from "../services/api-client";
 import { CartStateItem, getCartDetails } from "../lib/getCartDetails";
+import { CreateCartItemValues } from "../services/dto/cart.dto";
 
 export interface CartState {
 	loading: boolean;
@@ -24,18 +25,52 @@ export const useCartStore = create<CartState>((set, get) => ({
 	loading: true,
 	totalAmount: 0,
 	fetchCartItems: async () => {
-    try {
-      set({loading: true, error: false});
-      const data = await Api.cart.fetchCart();
-      set(getCartDetails(data));
-    } catch (error) {
-      console.error(error)
-      set({error: true})
-    } finally {
-      set({loading: false})
-    }
-  },
-	removeCartItem: async (id: number) => {},
-	updateItemQuantity: async (id: number, quantity: number) => {},
-	addCartItem: async (values: any) => {},
+		try {
+			set({ loading: true, error: false });
+			const data = await Api.cart.getCart();
+			set(getCartDetails(data));
+		} catch (error) {
+			console.error(error);
+			set({ error: true });
+		} finally {
+			set({ loading: false });
+		}
+	},
+	removeCartItem: async (id: number) => {
+		try {
+			set({ loading: true, error: false });
+			const data = await Api.cart.deleteCartItem(id);
+			set(getCartDetails(data));
+		} catch (error) {
+			console.error(error);
+			set({ error: true });
+		} finally {
+			set({ loading: false });
+		}
+	},
+	updateItemQuantity: async (id: number, quantity: number) => {
+		try {
+			set({ loading: true, error: false });
+			const data = await Api.cart.updateItemQuantity(id, quantity);
+			set(getCartDetails(data));
+		} catch (error) {
+			console.error(error);
+			set({ error: true });
+		} finally {
+			set({ loading: false });
+		}
+	},
+	addCartItem: async (values: CreateCartItemValues) => {
+		console.log("addCartItem",values);
+		try {
+			set({ loading: true, error: false });
+			const data = await Api.cart.addCartItem(values);
+			set(getCartDetails(data));
+		} catch (error) {
+			console.error(error);
+			set({ error: true });
+		} finally {
+			set({ loading: false });
+		}
+	},
 }));

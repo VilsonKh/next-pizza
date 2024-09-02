@@ -5,13 +5,19 @@ import { CartItemDetailsImage, CartItemDetailsPrice, CartItemInfo } from "./Cart
 import { CartItemProps } from "./CartItemDetails/CartItemDetails.types";
 import { CountButton } from "./CountButton";
 
-const CartDrawerItem: React.FC<CartItemProps> = ({
-	id,
+interface Props extends CartItemProps {
+	onClickCountButton: (type: 'plus' | 'minus') => void;
+	onClickRemove?: ()	=> void;
+}
+
+const CartDrawerItem: React.FC<Props> = ({
 	imageUrl,
 	details,
 	name,
 	price,
 	quantity,
+	onClickRemove,
+	onClickCountButton
 }) => {
 
 	return (
@@ -28,13 +34,13 @@ const CartDrawerItem: React.FC<CartItemProps> = ({
 
 				<div className="flex items-center justify-between">
 					<CountButton
-						onClick={(type) => console.log(type)}
+						onClick={onClickCountButton}
 						value={quantity}
 					></CountButton>
 
 					<div className="flex items-center gap-3">
 						<CartItemDetailsPrice value={price} />
-						<Trash2Icon className="text-gray-400 cursor-pointer hover:text-gray-600" size={16} />
+						<Trash2Icon onClick={onClickRemove} className="text-gray-400 cursor-pointer hover:text-gray-600" size={16} />
 					</div>
 				</div>
 			</div>
