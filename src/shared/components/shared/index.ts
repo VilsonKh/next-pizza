@@ -16,5 +16,6 @@ export {ChooseProductModal} from './modals/ChooseProductModal';
 export {Ingredient} from './Ingredient';
 export {CartButton} from './CartButton';
 export {CartDrawer} from './CartDrawer';
+export {ChooseItemForm} from './ChooseItemForm';
 
 export * from "./modals";

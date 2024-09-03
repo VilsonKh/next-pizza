@@ -3,6 +3,7 @@ import React from "react";
 import { Title } from "./Title";
 import { Button } from "../ui";
 import { Plus } from "lucide-react";
+import { Ingredient } from "@prisma/client";
 
 interface Props {
 	id: number;
@@ -10,9 +11,17 @@ interface Props {
 	price: number;
 	imageUrl: string;
 	className?: string;
+	ingredients: Ingredient[];
 }
 
-export const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, className }) => {
+export const ProductCard: React.FC<Props> = ({
+	id,
+	name,
+	price,
+	imageUrl,
+	className,
+	ingredients,
+}) => {
 	return (
 		<div className={className}>
 			<Link href={`/product/${id}`}>
@@ -31,20 +40,25 @@ export const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, classN
 				></Title>
 
 				<p className="text-sm text-gray-400">
-					Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо,
-					чеснок
+					{ingredients.map((ingredient) => ingredient.name).join(", ")}
 				</p>
 
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-[20px]">
-            от <b>{price} ₽</b>
-          </span>
+				<div className="flex justify-between items-center mt-4">
+					<span className="text-[20px]">
+						от <b>{price} ₽</b>
+					</span>
 
-          <Button variant={'secondary'} className="text-base font-bold">
-            <Plus size={20} className="mr-1"/>
-            Добавить
-          </Button>
-        </div>
+					<Button
+						variant={"secondary"}
+						className="text-base font-bold"
+					>
+						<Plus
+							size={20}
+							className="mr-1"
+						/>
+						Добавить
+					</Button>
+				</div>
 			</Link>
 		</div>
 	);

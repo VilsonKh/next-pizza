@@ -8,6 +8,7 @@ export interface CartState {
 	error: boolean;
 	totalAmount: number;
 	items: CartStateItem[];
+
 	// Получение товаров из корзины
 	fetchCartItems: () => Promise<void>;
 	// Запрос на обновление количества товара
@@ -38,14 +39,23 @@ export const useCartStore = create<CartState>((set, get) => ({
 	},
 	removeCartItem: async (id: number) => {
 		try {
-			set({ loading: true, error: false });
+			set((state) => ({
+				loading: true,
+				error: false,
+				items: state.items.map((item) =>
+					item.id === id ? { ...item, disabled: true } : item
+				),
+			}));
 			const data = await Api.cart.deleteCartItem(id);
 			set(getCartDetails(data));
 		} catch (error) {
 			console.error(error);
 			set({ error: true });
 		} finally {
-			set({ loading: false });
+			set((state) => ({
+				items: state.items.map((item) => ({ ...item, disabled: false })),
+				loading: false,
+			}));
 		}
 	},
 	updateItemQuantity: async (id: number, quantity: number) => {
@@ -61,7 +71,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 		}
 	},
 	addCartItem: async (values: CreateCartItemValues) => {
-		console.log("addCartItem",values);
+		console.log("addCartItem", values);
 		try {
 			set({ loading: true, error: false });
 			const data = await Api.cart.addCartItem(values);
