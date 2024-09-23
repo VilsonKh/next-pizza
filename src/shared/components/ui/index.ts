@@ -7,3 +7,4 @@ export {Checkbox} from './checkbox';
 export {Drawer} from './drawer';
 export {Popover} from './popover';
 export {Slider} from './slider';
+export {Textarea} from './textarea';
