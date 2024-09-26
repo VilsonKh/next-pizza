@@ -3,8 +3,8 @@
 import React from 'react';
 import { cn } from '@/shared/lib/utils';
 import { X } from 'lucide-react';
-import { CartItemProps } from './CartItemDetails/CartItemDetails.types';
-import { CartItemDetailsCountButton, CartItemDetailsImage, CartItemDetailsPrice, CartItemInfo } from './CartItemDetails';
+import { CartItemProps } from '../CartItemDetails/CartItemDetails.types';
+import { CartItemDetailsCountButton, CartItemDetailsImage, CartItemDetailsPrice, CartItemInfo } from '../CartItemDetails';
 
 interface Props extends CartItemProps {
   onClickCountButton?: (type: 'plus' | 'minus') => void;

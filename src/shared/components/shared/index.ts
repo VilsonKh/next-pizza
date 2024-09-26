@@ -18,8 +18,5 @@ export { CartButton } from "./CartButton";
 export { CartDrawer } from "./CartDrawer";
 export { ChooseItemForm } from "./ChooseItemForm";
 export { WhiteBlock } from "./WhiteBlock";
-export { CheckoutCostItem } from "./CheckoutCostItem";
-export {CheckoutCartItem} from "./CheckoutCartItem";
-export {CheckoutItemSkeleton} from "./CheckoutItemSkeleton";
-
+export { CheckoutCostItem } from "./Checkout/CheckoutCostItem";
 export * from "./modals";

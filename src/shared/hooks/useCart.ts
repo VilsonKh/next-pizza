@@ -10,6 +10,7 @@ type ReturnProps = {
  updateItemQuantity: (id: number, quantity: number) => void;
  removeCartItem: (id: number) => void;
  addCartItem: (values: CreateCartItemValues) => void; 
+ onClickCountButton: (id: number, quantity: number, type: "plus" | "minus") => void;
 }
 
 export const useCart = (): ReturnProps => {

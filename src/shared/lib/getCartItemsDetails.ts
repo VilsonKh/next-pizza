@@ -3,8 +3,8 @@ import { CartStateItem } from "./getCartDetails";
 
 export const getCartItemsDetails = (
 	ingredients: CartStateItem['ingredients'],
-	pizzaType: PizzaType,
-	pizzaSize: PizzaSize,
+	pizzaType?: PizzaType,
+	pizzaSize?: PizzaSize,
 ) => {
 	const details = [];
 	if (pizzaSize && pizzaType) {

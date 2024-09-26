@@ -18,6 +18,8 @@ export interface CartState {
 	addCartItem: (values: any) => Promise<void>;
 	// Запрос на удаление из корзины
 	removeCartItem: (id: number) => Promise<void>;
+	// Запрос на изменение количества в корзине
+	onClickCountButton: (id: number, quantity: number, type: "plus" | "minus") => void;
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -83,4 +85,9 @@ export const useCartStore = create<CartState>((set, get) => ({
 			set({ loading: false });
 		}
 	},
+
+	onClickCountButton: (id: number, quantity: number, type: "plus" | "minus") => {
+		const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+		get().updateItemQuantity(id, newQuantity);
+	}
 }));

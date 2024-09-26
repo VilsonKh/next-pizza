@@ -23,18 +23,15 @@ import { cn } from "@/shared/lib/utils";
 import { useCart } from "@/shared/hooks/useCart";
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
-const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
+	const { totalAmount, items, removeCartItem, onClickCountButton } = useCart();
 
-	const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
-		const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
-		updateItemQuantity(id, newQuantity);
-	};
+	const [redirecting, setRedirecting] = React.useState<boolean>(false);
 
 	return (
 		<Sheet>
 			<SheetTrigger asChild>{children}</SheetTrigger>
 			<SheetContent className="flex flex-col justify-between pb-0 bg-[#f4f1ee]">
-		<div className={cn("flex flex-col h-full", !totalAmount && "justify-center")}>
+				<div className={cn("flex flex-col h-full", !totalAmount && "justify-center")}>
 					{totalAmount > 0 && (
 						<SheetHeader>
 							<SheetTitle>
@@ -42,24 +39,36 @@ const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
 							</SheetTitle>
 						</SheetHeader>
 					)}
-	
+
 					{!totalAmount && (
 						<div className="flex flex-col items-center justify-center w-72 mx-auto">
-							<Image src="/assets/images/empty-box.png" alt="Empty cart" width={120} height={120}/>
-							<Title size="sm" text="Корзина пустая" className="text-center font-bold my-2"/>
+							<Image
+								src="/assets/images/empty-box.png"
+								alt="Empty cart"
+								width={120}
+								height={120}
+							/>
+							<Title
+								size="sm"
+								text="Корзина пустая"
+								className="text-center font-bold my-2"
+							/>
 							<p className="text-center text-neutral-500 mb-5">
 								Добавьте хотя бы одну пиццу, чтобы совершить заказ
 							</p>
-	
+
 							<SheetClose>
-								<Button className="w-56 h-12 text-base" size="lg">
-									<ArrowLeft className="w-5 mr-2"/>
+								<Button
+									className="w-56 h-12 text-base"
+									size="lg"
+								>
+									<ArrowLeft className="w-5 mr-2" />
 									Вернуться назад
 								</Button>
 							</SheetClose>
 						</div>
 					)}
-	
+
 					{totalAmount > 0 && (
 						<>
 							<div className="-mx-6 mt-5 overflow-auto flex-1">
@@ -71,15 +80,11 @@ const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
 										<CartDrawerItem
 											id={item.id}
 											imageUrl={item.imageUrl}
-											details={
-												item.pizzaSize && item.type
-													? getCartItemsDetails(
-															item.ingredients,
-															item.type as PizzaType,
-															item.pizzaSize as PizzaSize
-													  )
-													: ""
-											}
+											details={getCartItemsDetails(
+												item.ingredients,
+												item.type as PizzaType,
+												item.pizzaSize as PizzaSize
+											)}
 											name={item.name}
 											price={item.price}
 											quantity={item.quantity}
@@ -92,7 +97,7 @@ const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
 									</div>
 								))}
 							</div>
-	
+
 							<SheetFooter className="-mx-6 bg-white p-8">
 								<div className="w-full">
 									<div className="flex mb-4">
@@ -102,11 +107,13 @@ const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
 										</span>
 										<span className="font-bold text-lg">{totalAmount} ₽</span>
 									</div>
-	
-									<Link href="/cart">
+
+									<Link href="/checkout">
 										<Button
 											type="submit"
 											className="w-full h-12 text-base"
+											loading={redirecting}
+											onClick={() => setRedirecting(true)}
 										>
 											Оформить заказ <ArrowRight className="w-5 ml-2" />
 										</Button>
@@ -115,7 +122,7 @@ const {totalAmount, updateItemQuantity, items, removeCartItem} = useCart();
 							</SheetFooter>
 						</>
 					)}
-		</div>
+				</div>
 			</SheetContent>
 		</Sheet>
 	);
