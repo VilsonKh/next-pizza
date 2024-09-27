@@ -62,7 +62,13 @@ export const useCartStore = create<CartState>((set, get) => ({
 	},
 	updateItemQuantity: async (id: number, quantity: number) => {
 		try {
-			set({ loading: true, error: false });
+			set((state) => ({
+				loading: true,
+				error: false,
+				items: state.items.map((item) =>
+					item.id === id ? { ...item, disabled: true } : item
+				),
+			}));
 			const data = await Api.cart.updateItemQuantity(id, quantity);
 			set(getCartDetails(data));
 		} catch (error) {
@@ -89,5 +95,5 @@ export const useCartStore = create<CartState>((set, get) => ({
 	onClickCountButton: (id: number, quantity: number, type: "plus" | "minus") => {
 		const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
 		get().updateItemQuantity(id, newQuantity);
-	}
+	},
 }));

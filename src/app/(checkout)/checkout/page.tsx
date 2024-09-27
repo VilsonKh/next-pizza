@@ -16,7 +16,7 @@ import {
 } from "@/shared/constants/Schemas/CheckoutFormSchema";
 
 export default function CheckoutPage() {
-	const { totalAmount, items, removeCartItem, onClickCountButton, loading } = useCart();
+	const { totalAmount, items, removeCartItem, onClickCountButton, initialLoading } = useCart();
 
 	const form = useForm<TCheckoutFormValues>({
 		resolver: zodResolver(checkoutFormSchema),
@@ -50,14 +50,22 @@ export default function CheckoutPage() {
 								items={items}
 								onClickCountButton={onClickCountButton}
 								removeCartItem={removeCartItem}
+								loading={initialLoading}
 							/>
-							<CheckoutPersonalForm className={loading ? 'opacity-40 pointer-events-none' :  ""}/>
-							<CheckoutDeliveryForm className={loading ? 'opacity-40 pointer-events-none' :  ""}/>
+							<CheckoutPersonalForm
+								className={initialLoading ? "opacity-40 pointer-events-none" : ""}
+							/>
+							<CheckoutDeliveryForm
+								className={initialLoading ? "opacity-40 pointer-events-none" : ""}
+							/>
 						</div>
-	
+
 						{/* Right */}
 						<div className="w-[450px]">
-							<CheckoutSidebar totalAmount={totalAmount} loading={loading} />
+							<CheckoutSidebar
+								totalAmount={totalAmount}
+								loading={initialLoading}
+							/>
 						</div>
 					</div>
 				</form>
