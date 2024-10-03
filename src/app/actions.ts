@@ -3,9 +3,11 @@
 import { prisma } from "@/prisma/prisma-client";
 import { PayOrderTemplate } from "@/shared/components/shared/EmailTemplates/PayOrder";
 import { TCheckoutFormValues } from "@/shared/constants/Schemas/CheckoutFormSchema";
+import { createPayment } from "@/shared/lib/createPayment";
 import { sendEmail } from "@/shared/lib/SendEmail";
 import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
+import { set } from "zod";
 
 export async function createOrder(data: TCheckoutFormValues) {
 	try {
@@ -74,20 +76,41 @@ export async function createOrder(data: TCheckoutFormValues) {
 			},
 		});
 
-		// TODO: сделать создание ссылки оплаты
+		// const paymentData = await createPayment({
+		// 	amount: order.totalAmount,
+		// 	description: "Оплата заказа #" + order.id,
+		// 	orderId: order.id,
+		// });
 
-		//
+		// if (paymentData) {
+		// 	throw new Error("Payment data not found");
+		// }
 
-		await sendEmail(
-			data.email,
-			"Оплатите заказ # " + order.id,
-			PayOrderTemplate({
-				orderId: order.id,
-				totalAmount: order.totalAmount,
-				paymentUrl: "https://resend.com/docs/send-with-nextjs",
-			})
-		);
+		// await prisma.order.update({
+		// 	where: {
+		// 		id: order.id,
+		// 	},
+		// 	data: {
+		// 		//здесь должен быть айди оплаты
+		// 		paymentId: order.id.toString(),
+		// 	},
+		// });
+
+		// await sendEmail(
+		// 	data.email,
+		// 	"Оплатите заказ # " + order.id,
+		// 	PayOrderTemplate({
+		// 		orderId: order.id,
+		// 		totalAmount: order.totalAmount,
+		// 		// здесь должна быть ссылка на оплату для письма
+		// 		paymentUrl: 'https://projects.devilson.me',
+		// 	})
+		// );
+
+		setTimeout(() => {}, 5000);
+
+		return 'https://projects.devilson.me/next-pizza'
 	} catch (error) {
-		console.log('[CreateOrder] Server erroor: ', error);
+		console.log("[CreateOrder] Server erroor: ", error);
 	}
 }
